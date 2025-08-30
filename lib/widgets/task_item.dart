@@ -4,16 +4,16 @@ import '../models/task.dart';
 
 class TaskItem extends StatefulWidget {
   final Task task;
-  final int index;
   final VoidCallback onToggle;
   final VoidCallback onDelete;
+  final VoidCallback onEdit;
 
   const TaskItem({
     Key? key,
     required this.task,
-    required this.index,
     required this.onToggle,
     required this.onDelete,
+    required this.onEdit,
   }) : super(key: key);
 
   @override
@@ -42,12 +42,8 @@ class _TaskItemState extends State<TaskItem>
       CurvedAnimation(parent: _animationController, curve: Curves.easeOut),
     );
 
-    // Start animation with delay based on index
-    Future.delayed(Duration(milliseconds: widget.index * 100), () {
-      if (mounted) {
-        _animationController.forward();
-      }
-    });
+    // Start animation immediately
+    _animationController.forward();
   }
 
   @override
@@ -98,32 +94,30 @@ class _TaskItemState extends State<TaskItem>
                         // Custom checkbox
                         GestureDetector(
                           onTap: widget.onToggle,
-                          child: AnimatedContainer(
-                            duration: Duration(milliseconds: 200),
-                            width: 28,
-                            height: 28,
+                          child: Container(
+                            width: 24,
+                            height: 24,
                             decoration: BoxDecoration(
                               shape: BoxShape.circle,
+                              color: widget.task.isCompleted
+                                  ? Colors.purple
+                                  : Colors.transparent,
                               border: Border.all(
                                 color: widget.task.isCompleted
-                                    ? Colors.green
-                                    : Color(0xFFA18CD1),
-                                width: 2.5,
+                                    ? Colors.purple
+                                    : Colors.grey[400]!,
+                                width: 2,
                               ),
-                              color: widget.task.isCompleted
-                                  ? Colors.green
-                                  : Colors.transparent,
                             ),
                             child: widget.task.isCompleted
                                 ? Icon(
                                     Icons.check,
-                                    size: 18,
+                                    size: 16,
                                     color: Colors.white,
                                   )
                                 : null,
                           ),
                         ),
-
                         SizedBox(width: 16),
 
                         // Task content
@@ -131,80 +125,56 @@ class _TaskItemState extends State<TaskItem>
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              AnimatedDefaultTextStyle(
-                                duration: Duration(milliseconds: 200),
+                              Text(
+                                widget.task.title,
                                 style: TextStyle(
-                                  fontSize: 17,
-                                  fontWeight: FontWeight.w600,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w500,
+                                  color: widget.task.isCompleted
+                                      ? Colors.grey[600]
+                                      : Colors.black87,
                                   decoration: widget.task.isCompleted
                                       ? TextDecoration.lineThrough
-                                      : TextDecoration.none,
-                                  color: widget.task.isCompleted
-                                      ? Colors.grey[500]
-                                      : Colors.black87,
+                                      : null,
                                 ),
-                                child: Text(widget.task.title),
                               ),
                               SizedBox(height: 4),
-                              Row(
-                                children: [
-                                  Icon(
-                                    Icons.access_time,
-                                    size: 14,
-                                    color: Colors.grey[400],
-                                  ),
-                                  SizedBox(width: 4),
-                                  Text(
-                                    'Created: ${_formatDate(widget.task.createdAt)}',
-                                    style: TextStyle(
-                                      fontSize: 12,
-                                      color: Colors.grey[500],
-                                    ),
-                                  ),
-                                ],
+                              Text(
+                                'Created: ${_formatDate(widget.task.createdAt)}',
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  color: Colors.grey[500],
+                                ),
                               ),
                             ],
                           ),
                         ),
 
-                        // Status badge
-                        if (widget.task.isCompleted)
-                          Container(
-                            padding: EdgeInsets.symmetric(
-                              horizontal: 8,
-                              vertical: 4,
-                            ),
-                            decoration: BoxDecoration(
-                              color: Colors.green.withOpacity(0.1),
-                              borderRadius: BorderRadius.circular(12),
-                            ),
-                            child: Text(
-                              'Done',
-                              style: TextStyle(
-                                fontSize: 10,
-                                color: Colors.green[700],
-                                fontWeight: FontWeight.w600,
+                        // Action buttons
+                        Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            // Edit button
+                            IconButton(
+                              onPressed: widget.onEdit,
+                              icon: Icon(
+                                Icons.edit,
+                                color: Colors.purple[400],
+                                size: 20,
                               ),
+                              tooltip: 'Edit task',
                             ),
-                          ),
-
-                        SizedBox(width: 8),
-
-                        // Delete button
-                        GestureDetector(
-                          onTap: widget.onDelete,
-                          child: Container(
-                            padding: EdgeInsets.all(8),
-                            decoration: BoxDecoration(
-                              color: Colors.red.withOpacity(0.1),
-                              borderRadius: BorderRadius.circular(8),
+                            // Delete button
+                            IconButton(
+                              onPressed: widget.onDelete,
+                              icon: Icon(
+                                Icons.delete_outline,
+                                color: Colors.red[400],
+                                size: 20,
+                              ),
+                              tooltip: 'Delete task',
                             ),
-                            child: Icon(
-                              Icons.delete_outline,
-                              color: Colors.red[400],
-                              size: 20,
-                            ),
-                          ),
+                          ],
                         ),
                       ],
                     ),
