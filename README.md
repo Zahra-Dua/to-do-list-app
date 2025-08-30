@@ -135,17 +135,7 @@ The Counter BLoC manages counter operations:
 
 ## 📱 App Screenshots
 
-### Todo List Screen
-- Clean, modern interface
-- Task completion tracking
-- Smooth animations
-- Edit and delete functionality
 
-### Counter Screen
-- Animated counter display
-- Status indicators
-- Modern control buttons
-- Gradient background
 
 ## 🧪 Testing
 
@@ -171,40 +161,6 @@ test('should emit TaskLoaded when LoadTasks is added', () async {
 });
 ```
 
-## 🚀 Performance Optimizations
-
-1. **Efficient State Updates** - Only affected widgets rebuild
-2. **Immutable States** - Prevents unnecessary rebuilds
-3. **Event Debouncing** - Prevents rapid state changes
-4. **Lazy Loading** - Load data only when needed
-5. **Memory Management** - Proper disposal of BLoCs
-
-## 📈 Future Enhancements
-
-- [ ] **Firebase Integration** - Cloud storage and sync
-- [ ] **Push Notifications** - Task reminders
-- [ ] **Categories** - Task organization
-- [ ] **Search Functionality** - Find tasks quickly
-- [ ] **Dark Mode** - Theme switching
-- [ ] **Offline Support** - Work without internet
-- [ ] **Data Export** - Backup and share tasks
-
-## 🤝 Contributing
-
-1. Fork the repository
-2. Create a feature branch
-3. Make your changes
-4. Add tests if applicable
-5. Submit a pull request
-
-## 📄 License
-
-This project is licensed under the MIT License - see the LICENSE file for details.
-
-## 🎓 Learning Resources
-
-- [BLoC Documentation](https://bloclibrary.dev/)
-- [Flutter Official Docs](https://flutter.dev/docs)
 - [Material Design 3](https://m3.material.io/)
 
 ---
